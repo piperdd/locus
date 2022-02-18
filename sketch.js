@@ -43,10 +43,10 @@ let a = new cir(100,100,diameter,'blue','ABC')
 let b = new cir(400,100,diameter,'red','DEF')
 let c = new cir(100, 400, diameter, 'black', 'GHI')
 let rec = new cir(500, 500, diameter, 'green', 'ROOT')
-
+let particles = [a,b,c]
 
 function setup() { 
-  createCanvas(600, 600);
+  createCanvas(windowWidth, windowHeight);
 } 
 
 function draw() { 
@@ -55,7 +55,7 @@ function draw() {
   noStroke();
   a.circleclick();
   b.circleclick();
-  
+  c.circleclick();
   a.displayshadow(50);
   b.displayshadow(50);
   rec.displayshadow(50);
@@ -64,13 +64,24 @@ function draw() {
   b.display();
   c.display();
   rec.display();
-  
-  interact(a,b);
+  inter();
+  /*interact(a,b);
   interact(b,a);
-  interact(c,a);
+  interact(c,a);*/
   release(a,rec);
   release(b,rec);
+  release(c,rec);
   
+  //text("hello", 100, 100)
+}
+function inter(){
+  particles.forEach(p => {
+          particles.forEach(q => {
+            if (p != q) {
+              interact(p,q);
+            }
+          })
+      });
 }
 function interact(a, b){
   if (dist(a.x, a.y, b.x, b.y) < b.diameter+100){
@@ -109,10 +120,28 @@ function release(a,rec){
     }
   }
 }
+  
 function mouseReleased() {
   //console.log(mouseX, mouseY);
   //d = new Date();
-  console.log(rec.arr);
+  //console.log(rec.arr)
+ if (rec.arr.length != 0){
+   for (i = 0; i < rec.arr.length; i++){
+     for (j = 0; j < rec.arr[0].length;j++){
+       dur = rec.arr[i][j].ending-rec.arr[i][j].starting
+       stri = (rec.arr[i][j].id + " met " + rec.arr[i][j].id2 + " at " +rec.arr[i][j].starting + " to " + rec.arr[i][j].ending + "for a duration of " + dur/1000 + " seconds");
+       console.log(stri)
+       
+     }
+     
+   }
+    
+  }
+  
+  /*for (i=0; i< rec.arr.length;i++){
+    console.log(rec)
+  }*/
+  //console.log(rec[i])
   //a.id = 'jaja';
   //console.log(d.getHours(), d.getMinutes(), d.getSeconds());
   //console.log(d.getDate(),d.getMonth()+1, d.getYear()+1900);
